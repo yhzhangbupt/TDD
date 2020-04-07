@@ -22,6 +22,3 @@ urlpatterns=[
     url(r'^$',views.home_page,name='home'),
 ]
 
-#urlpatterns = [
-#    path('admin/', admin.site.urls),
-#]
