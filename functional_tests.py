@@ -39,13 +39,31 @@ class NewVisitorTest(unittest.TestCase):
         
         table=self.browser.find_element_by_id('id_list_table')
         rows=table.find_elements_by_tag_name('tr')
-        self.assertTrue(
-            any(row.text=='1: Buy peacock features' for row in rows),
-            "New to-do item did not appear in table"
-            )
+        #self.assertTrue(
+          #  any(row.text=='1: Buy peacock features' for row in rows),
+          #  f"New to-do item did not appear in table. Contents were:\n{table.text}"
+          #  )
+        self.assertIn('1: Buy peacock features',[row.text for row in rows])
 
         #There is still a text boxx inviting her to add another item. She
         #enters :Use peacock features to make a fly:(Edith is very methodical)
+        inputbox=self.browser.find_element_by_id('id_new_item')
+        inputbox.send_keys('Use peacock features to make a fly')
+        inputbox.send_keys(Keys.ENTER)
+        time.sleep(1)
+        
+        #The page updates again, and now shows both items on her list
+        table=self.browser.find_element_by_id('id_list_table')
+        rows=table.find_elements_by_tag_name('tr')
+        self.assertIn('1: Buy peacock features',[row.text for row in rows])
+        self.assertIn(
+            '2: Use peacock features to make a fly',
+            [row.text for row in rows]
+            )
+            
+        #Edith wonders whether the site will remermber her list.Then she sees
+        #that the site hae generated a unique URL for her -- there is some
+        #exxplanatary text to that effect.
         self.fail('Finish the test!' )#(5)
         
 if __name__ == '__main__':#(6)
@@ -65,11 +83,8 @@ if __name__ == '__main__':#(6)
 
 
 
-#The page updates again, and now shows both items on her list
 
-#Edith wonders whether the site will remermber her list.Then she sees
-#that the site hae generated a unique URL for her -- there is some
-#exxplanatary text to that effect.
+
 
 #She visits that URL - her to-do list is still there.
 
